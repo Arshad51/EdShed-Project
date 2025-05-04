@@ -24,6 +24,7 @@ public class GameplayController : MonoBehaviour
     private int currentLevel = 0;
 
     [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private TextMeshProUGUI questionText;
     [SerializeField] private Button showStatsButton;
     [SerializeField] private Button closeStatsButton;
     [SerializeField] private GameObject statsContainer;
@@ -74,12 +75,13 @@ public class GameplayController : MonoBehaviour
 
         foreach (var character in currentWord.text)
         {
-            Instantiate(snapSlotObject, snapSlotContainer);
+            var snapSlot = Instantiate(snapSlotObject, snapSlotContainer);
+            snapSlot.GetComponent<SnapSlot>().Value = character.ToString();
         }
 
         StartCoroutine(SpawnDraggables());
 
-        DisplayStats();
+        UpdateStats();
     }
 
     private IEnumerator SpawnDraggables()
@@ -121,6 +123,7 @@ public class GameplayController : MonoBehaviour
 
             GameObject obj = Instantiate(draggableObject, snapSlotContainer);
             obj.GetComponent<RectTransform>().anchoredPosition = spawnPos;
+            obj.GetComponent<Draggable>().Initialize(character.ToString());
         }
     }
 
@@ -159,7 +162,7 @@ public class GameplayController : MonoBehaviour
         Debug.Log("🎉 Displaying reward screen!");
     }
 
-    private void DisplayStats()
+    private void UpdateStats()
     {
         if (statsText == null)
         {
@@ -182,6 +185,7 @@ public class GameplayController : MonoBehaviour
             $"<b>Phonics:</b>{phonicsText}";
 
         statsText.text = finalText;
+        questionText.text = sentenceWithBlank;
     }
 
     private void ProgressToNextWord()
