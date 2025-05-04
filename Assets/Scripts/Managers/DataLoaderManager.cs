@@ -67,4 +67,9 @@ public class DataLoaderManager : MonoBehaviour
 
         LoadingManager.instance.HideLoadingScreen();
     }
+
+    public RootObject GetRootData()
+    {
+        return rootData;
+    }
 }
