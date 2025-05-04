@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameplayController : MonoBehaviour
 {
@@ -18,9 +20,20 @@ public class GameplayController : MonoBehaviour
 
     private int currentWordIndex = -1;
     private bool isGameActive = false;
+    private int currentLevel = 0;
+
+    [SerializeField] private TextMeshProUGUI statsText;
+    [SerializeField] private Button showStatsButton;
+    [SerializeField] private Button closeStatsButton;
+    [SerializeField] private GameObject statsContainer;
+    [SerializeField] private TextMeshProUGUI levelText;
 
     void Start()
     {
+        statsContainer.SetActive(false);
+        showStatsButton.onClick.AddListener(() => { statsContainer.SetActive(true); });
+        closeStatsButton.onClick.AddListener(() => { statsContainer.SetActive(false); });
+
         InitializeGame();
     }
 
@@ -38,6 +51,7 @@ public class GameplayController : MonoBehaviour
 
         currentWordIndex = Random.Range(0, WordsList.Count);
         currentWord = WordsList[currentWordIndex];
+        currentLevel++;
 
         // Parse sentence JSON string to List
         List<string> sentences = ParseJsonArray(currentWord.sentences);
@@ -91,14 +105,27 @@ public class GameplayController : MonoBehaviour
 
     private void DisplayStats()
     {
-        Debug.Log($"Word: {currentGameStats.word}");
-        Debug.Log($"Sentence: {currentGameStats.sentence.Replace("*", "_____")}");
-        Debug.Log($"Difficulty: {currentGameStats.difficulty}");
-        Debug.Log("Phonics:");
+        if (statsText == null)
+        {
+            Debug.LogWarning("Stats Text UI is not assigned!");
+            return;
+        }
+
+        string sentenceWithBlank = currentGameStats.sentence.Replace("*", "_____");
+        string phonicsText = "";
+
         foreach (var p in currentGameStats.phonics)
         {
-            Debug.Log($" - Phoneme: {p.phoneme}, Grapheme: {p.grapheme}");
+            phonicsText += $"\n - Phoneme: {p.phoneme}, Grapheme: {p.grapheme}";
         }
+
+        string finalText =
+            $"<b>Word:</b> {currentGameStats.word}\n" +
+            $"<b>Sentence:</b> {sentenceWithBlank}\n" +
+            $"<b>Difficulty:</b> {currentGameStats.difficulty}\n" +
+            $"<b>Phonics:</b>{phonicsText}";
+
+        statsText.text = finalText;
     }
 
     private void ProgressToNextWord()
