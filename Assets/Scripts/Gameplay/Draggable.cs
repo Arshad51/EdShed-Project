@@ -2,27 +2,33 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Linq;
+using TMPro;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private RectTransform rectTransform;
     private Canvas canvas;
-    private Vector2 originalPosition;
     private SnapSlot currentSlot;
 
     public float snapThreshold = 80f;
     public float unsnapThreshold = 100f;
 
+    private TextMeshProUGUI characterText;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvas = GetComponentInParent<Canvas>();
+        characterText = GetComponent<TextMeshProUGUI>();
+    }
+
+    public void Initialize(string value)
+    {
+        characterText.text = value;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        originalPosition = rectTransform.anchoredPosition;
-
         // Start drag, keep currentSlot reference
         // We will only clear it if dragged far enough in OnDrag
     }
@@ -65,8 +71,5 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 return;
             }
         }
-
-        // ✅ No snapping — leave where user dropped it (do nothing)
-        // originalPosition remains unchanged, we only use it if you want reset
     }
 }
