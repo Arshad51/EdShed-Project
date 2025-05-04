@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class SceneManager : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
-    public static SceneManager instance;
+    public static SceneLoader instance;
 
     //Add a function to display what text to display while loading... 
 
@@ -16,5 +17,15 @@ public class SceneManager : MonoBehaviour
             Destroy(gameObject);
 
         DontDestroyOnLoad(gameObject);
+    }
+
+    public void LoadMainScene()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void LoadGameplayScene()
+    {
+        SceneManager.LoadScene(1);
     }
 }
