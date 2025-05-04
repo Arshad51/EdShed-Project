@@ -31,6 +31,12 @@ public class LoadingManager : MonoBehaviour
         StartCoroutine(CheckInternetConnectionFirstTimeCoroutine());
 
         InvokeRepeating("CheckInternetConnection", 15f, 15f); // Check every 5 seconds
+
+        ShowLoadingScreen();
+
+        UpdateText("Loading Content...");
+
+        DataLoaderManager.instance.Initialize();
     }
 
     private void CheckInternetConnection()

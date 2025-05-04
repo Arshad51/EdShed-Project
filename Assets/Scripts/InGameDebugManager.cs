@@ -8,7 +8,6 @@ public class InGameDebugManager : MonoBehaviour
 
     [SerializeField] GameObject DebugWindow;
     [SerializeField] Button CloseButton;
-    [SerializeField] Button ClearAllPlayerPrefsButton;
 
     [SerializeField] private Text logText;
     [SerializeField] private ScrollRect scrollRect;
@@ -29,12 +28,11 @@ public class InGameDebugManager : MonoBehaviour
     private void Start()
     {
         CloseButton.onClick.AddListener(() => { DebugWindow.SetActive(false); });
-        ClearAllPlayerPrefsButton.onClick.AddListener(PlayerPrefs.DeleteAll);
     }
 
     void Update()
     {
-        if (Input.touchCount >= 3 || Input.GetKeyDown(KeyCode.F7))
+        if (Input.touchCount >= 3 || Input.GetKeyDown(KeyCode.H))
         {
             DebugWindow.SetActive(true);
             verticalLayout.enabled = false;
