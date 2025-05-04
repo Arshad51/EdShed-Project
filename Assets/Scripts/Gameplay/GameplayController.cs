@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -27,6 +28,9 @@ public class GameplayController : MonoBehaviour
     [SerializeField] private Button closeStatsButton;
     [SerializeField] private GameObject statsContainer;
     [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private GameObject snapSlotObject;
+    [SerializeField] private GameObject draggableObject;
+    [SerializeField] private Transform snapSlotContainer;
 
     void Start()
     {
@@ -66,8 +70,60 @@ public class GameplayController : MonoBehaviour
             phonics = currentWord.dictionary.phonics
         };
 
+        snapSlotContainer.GetComponent<GridLayoutGroup>().enabled = true;
+
+        foreach (var character in currentWord.text)
+        {
+            Instantiate(snapSlotObject, snapSlotContainer);
+        }
+
+        StartCoroutine(SpawnDraggables());
+
         DisplayStats();
     }
+
+    private IEnumerator SpawnDraggables()
+    {
+        yield return new WaitForSeconds(1);
+
+        snapSlotContainer.GetComponent<GridLayoutGroup>().enabled = false;
+
+        // Set anchor to middle center for each snapSlotObject
+        foreach (Transform child in snapSlotContainer)
+        {
+            RectTransform rect = child.GetComponent<RectTransform>();
+
+            // Store the world position before anchor change
+            Vector3 worldPos = rect.position;
+
+            // Change anchor preset to Middle Center
+            rect.anchorMin = new Vector2(0.5f, 0.5f);
+            rect.anchorMax = new Vector2(0.5f, 0.5f);
+            rect.pivot = new Vector2(0.5f, 0.5f);
+
+            // Apply world position again to maintain visual location
+            rect.position = worldPos;
+
+        }
+
+        foreach (var character in currentWord.text)
+        {
+            Vector2 spawnPos;
+
+            do
+            {
+                float x = Random.Range(-490f, 490f);
+                float y = Random.Range(-240f, 191f);
+                spawnPos = new Vector2(x, y);
+            }
+            while (spawnPos.x >= -362f && spawnPos.x <= 362f &&
+                   spawnPos.y >= -102f && spawnPos.y <= 102f);
+
+            GameObject obj = Instantiate(draggableObject, snapSlotContainer);
+            obj.GetComponent<RectTransform>().anchoredPosition = spawnPos;
+        }
+    }
+
 
     public void CheckAnswer(string playerInput)
     {

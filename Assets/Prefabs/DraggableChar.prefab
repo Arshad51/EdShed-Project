@@ -75,8 +75,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4286282619
-  m_fontColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -147,5 +147,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3088322104fc7e94287e5ab8ef9d54f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snapThreshold: 80
-  unsnapThreshold: 100
+  snapThreshold: 40
+  unsnapThreshold: 40
