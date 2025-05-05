@@ -68,6 +68,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
                 rectTransform.anchoredPosition = slotRect.anchoredPosition;
                 slot.IsOccupied = true;
                 currentSlot = slot;
+                slot.Value = characterText.text;
                 return;
             }
         }
