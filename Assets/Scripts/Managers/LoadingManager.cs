@@ -30,7 +30,7 @@ public class LoadingManager : MonoBehaviour
         retryButton.onClick.AddListener(RetryButton);
         StartCoroutine(CheckInternetConnectionFirstTimeCoroutine());
 
-        InvokeRepeating("CheckInternetConnection", 15f, 15f); // Check every 5 seconds
+        InvokeRepeating("CheckInternetConnection", 10f, 10f); // Check every 10 seconds
 
         ShowLoadingScreen();
 
