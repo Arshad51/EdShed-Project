@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq;
 
 public class GameplayController : MonoBehaviour
 {
@@ -82,9 +83,25 @@ public class GameplayController : MonoBehaviour
 
         isGameActive = true;
 
-        currentWordIndex = Random.Range(0, WordsList.Count);
-        currentWord = WordsList[currentWordIndex];
+        // Increase difficulty with each level
         currentLevel++;
+        float targetDifficulty = Mathf.Clamp(0.45f + (currentLevel * 0.10f), 0.20f, 5.0f);
+        float range = 0.15f;
+
+        // Filter words within the difficulty range
+        List<Word> filteredWords = WordsList
+            .Where(word => word.difficulty_index >= targetDifficulty - range && word.difficulty_index <= targetDifficulty + range)
+            .ToList();
+
+
+        // Fallback to full list if no match
+        if (filteredWords.Count == 0)
+        {
+            Debug.LogWarning($"No words found for difficulty {targetDifficulty:F2}. Using full list.");
+            filteredWords = WordsList;
+        }
+
+        currentWord = filteredWords[Random.Range(0, filteredWords.Count)];
         confirmButton.interactable = true;
 
         List<string> sentences = ParseJsonArray(currentWord.sentences);
@@ -120,6 +137,7 @@ public class GameplayController : MonoBehaviour
 
         UpdateStats();
     }
+
 
     private IEnumerator SpawnDraggables()
     {
