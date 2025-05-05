@@ -22,7 +22,7 @@ public class GameplayController : MonoBehaviour
 
     private int currentWordIndex = -1;
     private bool isGameActive = false;
-    private int currentLevel = 0;
+    private int currentLevel = -1;
     private int lives = 3;
 
 
@@ -54,8 +54,7 @@ public class GameplayController : MonoBehaviour
         confirmButton.onClick.AddListener(() => { CheckAnswer(); });
         tryAgainButton.onClick.AddListener(() => 
         {
-            currentLevel = 0;
-            lives = 3;
+            currentLevel = -1;
             statsContainer.SetActive(false);
             rewardContainer.SetActive(false);
             InitializeGame();
@@ -66,7 +65,7 @@ public class GameplayController : MonoBehaviour
 
     public void InitializeGame()
     {
-        if (currentLevel == 0)
+        if (currentLevel == -1)
         {
             lives = 3;
         }
