@@ -15,6 +15,13 @@ public class MainController : MonoBehaviour
 
         //load data from local (PlayerPrefs)
         var score = UserDataManager.instance.GetHighScore();
-        highScoreText.text = score;
+
+        if (score == null)
+        {
+            score = "0";
+        }
+
+        highScoreText.text = "HighScore: " + score;
+;
     }
 }
